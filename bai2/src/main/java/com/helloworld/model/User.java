@@ -9,6 +9,14 @@ public class User {
         this.content = content;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public String getContent() {
         return content;
     }
