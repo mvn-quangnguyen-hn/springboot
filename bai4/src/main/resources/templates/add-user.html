@@ -16,7 +16,7 @@
 <div>
     <form th:action="@{/adduser}" th:object="${user}" method="post">
         <label for="username">Username:</label><br>
-        <input type="text" id="username" th:name="username" required><br>
+        <input type="text" id="username" th:name="username" minlength="4" required><br>
 
         <label for="email">Email:</label><br>
         <input type="email" id="email" th:name="email" required><br><br>
