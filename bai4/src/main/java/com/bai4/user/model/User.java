@@ -1,6 +1,9 @@
 package com.bai4.user.model;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "user_tbl")
@@ -8,7 +11,16 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String username, email;
+
+    @NotBlank(message = "Name is mandatory")
+    @Size(min = 4, message = "Username > 4 characters")
+    private String username;
+
+    @NotBlank(message = "Email is mandatory")
+    @Email(message = "Email is invalid")
+    private String email;
+
+    @NotBlank(message = "DOB is mandatory")
     private String birthday;
 
     public User() {

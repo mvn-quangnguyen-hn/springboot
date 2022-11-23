@@ -1,0 +1,13 @@
+<div th:fragment="nav">
+    <div class="topnav">
+        <a class="active" href="/">Home</a>
+        <a href="#contact">Contact</a>
+        <a href="#about">About</a>
+        <div class="search-container">
+            <form th:action="@{/search}">
+                <input type="text" th:name="search" placeholder="Username">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </div>
+</div>
