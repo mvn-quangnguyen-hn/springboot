@@ -1,14 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main-layout :: main-fragment(
+      ~{:: title},
+      ~{:: #static-resources},
+      ~{:: #nav},
+      ~{:: #main-content},
+      ~{:: #footer})}">
 <head>
-    <th:block th:insert="fragments/header :: head"></th:block>
-    <link th:href="@{/styles/addedit/addandedit.css}" rel="stylesheet"/>
+    <title>Add User Page</title>
+    <th:block id="static-resources">
+        <link th:href="@{/styles/users/users.css}" rel="stylesheet"/>
+    </th:block>
 </head>
 <body>
-<div th:replace="fragments/nav :: nav"></div>
-<br>
-<h1 style="text-align: center">Add User</h1>
-<div class="addedit">
+<div id="nav" th:replace="~{/fragments/app-fragments :: nav}"></div>
+<div id="main-content" class="user-form">
+    <h1 style="text-align: center">Add User</h1><br>
     <form th:action="@{/adduser}" th:object="${user}" method="post">
         <label for="username">Username:</label><br>
         <input type="text" id="username" th:name="username"><br>
@@ -37,6 +44,6 @@
         <input type="submit" class="btn btn-primary" value="Add">
     </form>
 </div>
-<div th:replace="fragments/footer :: foot"></div>
+<div id="footer" th:replace="~{/fragments/app-fragments :: footer}"></div>
 </body>
 </html>

@@ -1,4 +1,4 @@
-.addedit input[type=text], input[type=email], input[type=date] {
+.user-form input[type=text], input[type=email], input[type=date] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -8,7 +8,7 @@
   box-sizing: border-box;
 }
 
-.addedit input[type=submit] {
+.user-form input[type=submit] {
   width: 100%;
   background-color: #0d6efd;
   color: white;
@@ -19,11 +19,11 @@
   cursor: pointer;
 }
 
-.addedit input[type=submit]:hover {
+.user-form input[type=submit]:hover {
   background-color: #0654c7;
 }
 
-div.addedit {
+div.user-form {
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;

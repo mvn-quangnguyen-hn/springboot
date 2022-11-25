@@ -1,5 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>App Fragments</title>
+</head>
+<body>
+<!-- Navigator -->
+<div th:fragment="nav">
+    <div class="topnav">
+        <a class="active" href="/">Home</a>
+        <a href="#contact">Contact</a>
+        <a href="#about">About</a>
+        <div class="search-container">
+            <form th:action="@{/search}">
+                <input type="text" th:name="search" placeholder="Username">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- Site footer -->
-<div th:fragment="foot" class="site-footer">
+<div th:fragment="footer" class="site-footer">
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-6">
@@ -51,3 +72,5 @@
         </div>
     </div>
 </div>
+</body>
+</html>

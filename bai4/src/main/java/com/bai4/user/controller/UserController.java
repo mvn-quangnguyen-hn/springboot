@@ -20,7 +20,6 @@ public class UserController {
     @GetMapping(value = {"/index", "/", ""})
     public String showUserList(Model model) {
         model.addAttribute("users", service.ListAll());
-        model.addAttribute("pageTitle", "Home Page");
         return "index";
     }
 
@@ -29,11 +28,9 @@ public class UserController {
     public String searchUsername(@RequestParam(value = "search", required = false) String search, Model model) {
         if (search.equals("")) {
             model.addAttribute("users", service.ListAll());
-            model.addAttribute("pageTitle", "Home Page");
             return "index";
         } else {
             model.addAttribute("users", service.ListAllByUsername(search));
-            model.addAttribute("pageTitle", "Search Page");
             return "search";
         }
     }
@@ -42,14 +39,13 @@ public class UserController {
     @GetMapping("/add")
     public String addUserPage(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("pageTitle", "Add User Page");
-        return "add-user";
+        return "/users/add-user";
     }
 
     @PostMapping("/adduser")
     public String addUser(@Valid @ModelAttribute("user") User user, BindingResult result) {
         if (result.hasErrors()) {
-            return "add-user";
+            return "/users/add-user";
         }
         service.save(user);
         return "redirect:/index";
@@ -59,8 +55,7 @@ public class UserController {
     @GetMapping("/edit/{id}")
     public String editUserPage(@PathVariable("id") Integer id, Model model) {
         model.addAttribute("user", service.getById(id));
-        model.addAttribute("pageTitle", "Edit User Page");
-        return "edit-user";
+        return "/users/edit-user";
     }
 
     @PostMapping("/edituser")
