@@ -1,7 +1,5 @@
 package com.bai4.user.model;
 
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
 

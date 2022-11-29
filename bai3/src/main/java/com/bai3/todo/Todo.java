@@ -1,6 +1,7 @@
 package com.bai3.todo;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "todo_tbl")
@@ -8,6 +9,8 @@ public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @NotNull(message = "Must not null")
     private String title;
 
     public Integer getId() {
