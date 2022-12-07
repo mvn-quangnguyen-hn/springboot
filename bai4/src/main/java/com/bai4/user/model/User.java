@@ -8,17 +8,21 @@ import javax.validation.constraints.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     @NotBlank(message = "Name is mandatory")
     @Size(min = 4, message = "Username > 4 characters")
+    @Column(name = "username")
     private String username;
 
     @NotBlank(message = "Email is mandatory")
     @Email(message = "Email is invalid")
+    @Column(name = "email")
     private String email;
 
     @NotBlank(message = "DOB is mandatory")
+    @Column(name = "birthday")
     private String birthday;
 
     public User() {

@@ -2,14 +2,15 @@ package com.bai4.user.controller;
 
 import com.bai4.user.model.User;
 import com.bai4.user.service.UserService;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.*;
 
 @Controller
 public class UserController {
@@ -18,14 +19,38 @@ public class UserController {
 
     //    List users
     @GetMapping(value = {"/index", "/", ""})
-    public String showUserList(Model model) {
-        model.addAttribute("users", service.ListAll());
+//    public String showUserList(Model model) {
+//        model.addAttribute("users", service.ListAll());
+//        return "index";
+//    }
+    public String showUserList(Model model,
+                               @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
+                               @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
+                               @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort) {
+        Sort sortable = null;
+        if (sort.equals("ASC")) {
+            sortable = Sort.by("id").ascending();
+        }
+        if (sort.equals("DESC")) {
+            sortable = Sort.by("id").descending();
+        }
+        assert sortable != null;
+
+        Page<User> userPage = service.findUsers(page, size, sortable);
+
+        List<User> users = userPage.getContent();
+
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", userPage.getTotalPages());
+        model.addAttribute("totalItems", userPage.getTotalElements());
+        model.addAttribute("users", users);
+
         return "index";
     }
 
     //    Search username
     @RequestMapping("/search")
-    public String searchUsername(@RequestParam(value = "search", required = false) String search, Model model) {
+    public String searchUsername(Model model, @RequestParam(value = "search", required = false) String search) {
         if (search.equals("")) {
             model.addAttribute("users", service.ListAll());
             return "index";

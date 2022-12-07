@@ -11,6 +11,11 @@
         <a class="active" href="/">Home</a>
         <a href="#contact">Contact</a>
         <a href="#about">About</a>
+        <div>
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="Sign Out"/>
+            </form>
+        </div>
         <div class="search-container">
             <form th:action="@{/search}">
                 <input type="text" th:name="search" placeholder="Username">
