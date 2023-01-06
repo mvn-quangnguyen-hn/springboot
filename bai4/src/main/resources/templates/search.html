@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main-layout :: main-fragment(
+      ~{:: title},
+      ~{:: #search-static-resources},
+      ~{:: #nav},
+      ~{:: #main-content},
+      ~{:: #footer}
+      )}">
+<head>
+    <title>Search Page</title>
+    <th:block id="search-static-resources"></th:block>
+</head>
+<body>
+<div id="nav" th:replace="~{/fragments/app-fragments :: nav}"></div>
+<br>
+<h1>Search Result</h1>
+<div id="main-content" th:switch="${users}">
+    <h2 th:case="null">No users yet!</h2>
+    <div th:case="*">
+        <h2 style="text-align: center">Users</h2>
+        <table class="center">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>DOB</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.birthday}"></td>
+                <td><a th:href="@{/edit/{id}(id=${user.id})}"><i class="bi bi-pencil-square"></i></a></td>
+                <td><a onclick="return confirm('Are you sure to delete???')" th:href="@{/delete/{id}(id=${user.id})}"><i
+                        class="bi bi-person-x"></i></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <p>
+        <a style="margin-left: 25%" class="btn btn-outline-primary" href="/add">Add a new user</a>
+    </p>
+</div>
+<div id="footer" th:replace="~{/fragments/app-fragments :: footer}"></div>
+</body>
+</html>

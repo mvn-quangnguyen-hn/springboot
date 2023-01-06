@@ -5,8 +5,11 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController // @RestController dùng cho API, còn return View HTML thì dùng @Controller
@@ -28,29 +31,61 @@ public class TodoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getId(@PathVariable Integer id) {
+    public ResponseEntity<?> getId(@PathVariable("id") Integer id) {
         if (service.getById(id) != null) {
             return new ResponseEntity<Todo>(service.getById(id), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Todo not found!" ,HttpStatus.NOT_FOUND);
+            return ResponseHandler.generateResponse(
+                    HttpStatus.NOT_FOUND,
+                    HttpStatus.NOT_FOUND.name(),
+                    String.format("Todo was not found for parameters {id=%d}", id),
+                    null);
         }
     }
 
     // RESTful API method for Create operation
     @PostMapping
-    public ResponseEntity<?> Add(@RequestBody Todo todo) {
-        service.save(todo);
-        return new ResponseEntity<>("Saved", HttpStatus.OK);
+    public ResponseEntity<?> Add(@Valid @RequestBody Todo todo, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("object", Objects.requireNonNull(result.getFieldError()).getObjectName());
+            map.put("field", result.getFieldError().getField());
+            map.put("rejectedValue", result.getFieldError().getRejectedValue());
+            map.put("message", result.getFieldError().getDefaultMessage());
+
+            return ResponseHandler.generateResponse(
+                    HttpStatus.BAD_REQUEST,
+                    HttpStatus.BAD_REQUEST.name(),
+                    "Validation errors",
+                    map);
+        } else {
+            service.save(todo);
+            return new ResponseEntity<>("Saved", HttpStatus.OK);
+        }
     }
 
     // RESTful API method for Update operation
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody Todo todo, @PathVariable Integer id) {
+    public ResponseEntity<?> update(@Valid @RequestBody Todo todo, BindingResult result, @PathVariable Integer id) {
         if (service.getById(id) != null) {
-            service.save(todo);
-            return new ResponseEntity<Todo>(todo, HttpStatus.OK);
+            if (result.hasErrors()) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("object", Objects.requireNonNull(result.getFieldError()).getObjectName());
+                map.put("field", result.getFieldError().getField());
+                map.put("rejectedValue", result.getFieldError().getRejectedValue());
+                map.put("message", result.getFieldError().getDefaultMessage());
+
+                return ResponseHandler.generateResponse(
+                        HttpStatus.BAD_REQUEST,
+                        HttpStatus.BAD_REQUEST.name(),
+                        "Validation errors",
+                        map);
+            } else {
+                service.save(todo);
+                return new ResponseEntity<>("Saved", HttpStatus.OK);
+            }
         } else {
-            return new ResponseEntity<>("Todo not found!" ,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Todo not found!", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -61,7 +96,7 @@ public class TodoController {
             service.delete(id);
             return new ResponseEntity<>("Deleted", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Todo not found!" ,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Todo not found!", HttpStatus.NOT_FOUND);
         }
     }
 }

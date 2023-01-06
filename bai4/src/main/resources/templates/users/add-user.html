@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main-layout :: main-fragment(
+      ~{:: title},
+      ~{:: #static-resources},
+      ~{:: #nav},
+      ~{:: #main-content},
+      ~{:: #footer})}">
+<head>
+    <title>Add User Page</title>
+    <th:block id="static-resources">
+        <link th:href="@{/styles/users/users.css}" rel="stylesheet"/>
+    </th:block>
+</head>
+<body>
+<div id="nav" th:replace="~{/fragments/app-fragments :: nav}"></div>
+<div id="main-content" class="user-form">
+    <h1 style="text-align: center">Add User</h1><br>
+    <form th:action="@{/adduser}" th:object="${user}" method="post">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" th:name="username"><br>
+        <div th:if="${#fields.hasErrors('username')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('username')}" th:text="${err}" class="error" />
+            </ul>
+        </div>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" th:name="email"><br>
+        <div th:if="${#fields.hasErrors('email')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('email')}" th:text="${err}" class="error" />
+            </ul>
+        </div>
+
+        <label for="birthday">Birthday:</label><br>
+        <input type="date" id="birthday" th:name="birthday"><br>
+        <div th:if="${#fields.hasErrors('birthday')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('birthday')}" th:text="${err}" class="error" />
+            </ul>
+        </div>
+
+        <input type="submit" class="btn btn-primary" value="Add">
+    </form>
+</div>
+<div id="footer" th:replace="~{/fragments/app-fragments :: footer}"></div>
+</body>
+</html>

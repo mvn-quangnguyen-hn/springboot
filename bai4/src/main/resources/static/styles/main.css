@@ -1,0 +1,21 @@
+table, th, td {
+  border: 1px solid black;
+  text-align: center;
+}
+
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+input[type=submit] {
+  background-color: #4f5bbf;
+  border: none;
+  color: white;
+  padding: 4px 32px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px
+}
